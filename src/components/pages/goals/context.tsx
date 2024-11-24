@@ -95,8 +95,11 @@ export default function DailyGoalsProvider(props: PropsWithChildren) {
     setGoals(updatedGoals);
   };
 
-  const goals_: GoalType[] = [];
-  const todos_: GoalType[] = [];
+  const completedGoals: GoalType[] = [];
+  const unfinishedGoals: GoalType[] = [];
+
+  const completedTodos: GoalType[] = [];
+  const unfinishedTodos: GoalType[] = [];
 
   // Map the elements of the map store to separate arrays for simpler rendering
   goals.keys().forEach((key) => {
@@ -105,15 +108,24 @@ export default function DailyGoalsProvider(props: PropsWithChildren) {
     if (!goal) return;
 
     if (goal?.custom) {
-      todos_.push({ ...goal, id: key });
-    } else {
-      goals_.push({ ...goal, id: key });
+      if (goal.completed) {
+        completedTodos.push({ ...goal, id: key });
+        return;
+      }
+      unfinishedTodos.push({ ...goal, id: key });
+      return;
     }
+
+    if (goal.completed) {
+      completedGoals.push({ ...goal, id: key });
+      return;
+    }
+    unfinishedGoals.push({ ...goal, id: key });
   });
 
   const value = {
-    goals: goals_,
-    todos: todos_,
+    goals: [...unfinishedGoals, ...completedGoals],
+    todos: [...unfinishedTodos, ...completedTodos],
     //
     toggleGoal,
     addTodo,

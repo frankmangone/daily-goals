@@ -3,12 +3,14 @@
 import { createContext, PropsWithChildren, useContext, useState } from "react";
 
 interface CalendarContextData {
+  today: Date;
   currentMonth: Date;
   prevMonth: () => void;
   nextMonth: () => void;
 }
 
 const CalendarContext = createContext<CalendarContextData>({
+  today: new Date(),
   currentMonth: new Date(),
   prevMonth: () => {},
   nextMonth: () => {},
@@ -20,7 +22,9 @@ export const useCalendar = (): CalendarContextData => {
 
 export default function CalendarProvider(props: PropsWithChildren) {
   const { children } = props;
-  const [currentMonth, setCurrentMonth] = useState(new Date());
+
+  const [today] = useState(new Date());
+  const [currentMonth, setCurrentMonth] = useState(today);
 
   const prevMonth = () =>
     setCurrentMonth(
@@ -33,6 +37,7 @@ export default function CalendarProvider(props: PropsWithChildren) {
     );
 
   const value = {
+    today,
     currentMonth,
     prevMonth,
     nextMonth,
