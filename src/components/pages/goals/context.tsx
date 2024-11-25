@@ -1,9 +1,17 @@
 "use client";
 
-import { type Goal as GoalType } from "@/types/goal";
-import { createContext, PropsWithChildren, useContext, useState } from "react";
+import { API__Goal, type Goal as GoalType } from "@/types/goal";
+import {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { supabase } from "@/lib/supabase/client";
+import { useQuery } from "@tanstack/react-query";
 
-type TrimmerGoal = Omit<GoalType, "id">;
+type TrimmedGoal = Omit<GoalType, "id">;
 
 interface DailyGoalsContextData {
   goals: GoalType[];
@@ -31,32 +39,53 @@ const DailyGoalsContext = createContext<DailyGoalsContextData>({
   setError: (text: string) => {}, // eslint-disable-line @typescript-eslint/no-unused-vars
 });
 
+function fetchGoals(date: string) {
+  return async (): Promise<API__Goal[]> => {
+    const { data, error } = await supabase
+      .from("goals")
+      .select()
+      .eq("date", date);
+
+    if (error) console.error("Error fetching goals:", error);
+    return data as API__Goal[];
+  };
+}
+
 export const useDailyGoals = (): DailyGoalsContextData => {
   return useContext(DailyGoalsContext);
 };
 
-const baseGoals = [
-  { id: 1, text: "Exercise for 30 minutes", completed: false },
-  { id: 2, text: "Read 20 pages", completed: false },
-  { id: 3, text: "Meditate for 10 minutes", completed: false },
-  { id: 4, text: "Write in journal", completed: false },
-  { id: 5, text: "Learn something new", completed: false },
-];
+interface DailyGoalsProviderProps extends PropsWithChildren {
+  date: string;
+}
 
-export default function DailyGoalsProvider(props: PropsWithChildren) {
-  const { children } = props;
+export default function DailyGoalsProvider(props: DailyGoalsProviderProps) {
+  const { children, date } = props;
 
-  // Initialize goals
-  const [goals, setGoals] = useState<Map<number, TrimmerGoal>>(() => {
-    const map = new Map<number, TrimmerGoal>();
+  const {
+    data: goalsData,
+    error: fetchError,
+    isLoading,
+  } = useQuery({ queryKey: ["goals", date], queryFn: fetchGoals(date) });
 
-    baseGoals.forEach((goal) => {
-      const { id, ...rest } = goal;
-      map.set(id, rest);
-    });
+  const [goals, setGoals] = useState<Map<number, TrimmedGoal>>(new Map());
 
-    return map;
-  });
+  // Update goals whenever query data changes
+  useEffect(() => {
+    if (goalsData) {
+      const map = new Map<number, TrimmedGoal>();
+      goalsData.forEach((goal) => {
+        const { id, ...rest } = goal;
+        const newGoal: TrimmedGoal = {
+          text: rest.text,
+          completed: rest.is_completed,
+          custom: true, // TODO: Revisit this, it's not gonna work like that
+        };
+        map.set(id, newGoal);
+      });
+      setGoals(map);
+    }
+  }, [goalsData]);
 
   // Use react hook forms?
   const [newGoal, setNewGoal] = useState("");
@@ -136,6 +165,9 @@ export default function DailyGoalsProvider(props: PropsWithChildren) {
     error,
     setError,
   };
+
+  if (isLoading) return <div>Loading...</div>;
+  if (fetchError) return <div>Error: {fetchError.message}</div>;
 
   return (
     <DailyGoalsContext.Provider value={value}>
