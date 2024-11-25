@@ -18,7 +18,7 @@ export function fetchGoals(date: string) {
     return data.map((goal) => ({
       id: goal.id,
       text: goal.text,
-      completed: false,
+      completed: goal.is_completed,
       custom: true,
     }));
   };

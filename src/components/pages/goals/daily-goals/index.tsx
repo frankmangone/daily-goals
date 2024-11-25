@@ -29,7 +29,7 @@ export function DailyGoals() {
         <div>
           <h2 className="text-xl font-semibold mb-4">Daily Goals</h2>
           <Card className="p-4 flex items-center justify-between h-14">
-            <h3>Under construction!</h3>
+            <h3>🚧 Under construction!</h3>
           </Card>
           {/* renderGoals(goals, false) */}
         </div>
