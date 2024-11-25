@@ -1,6 +1,6 @@
 "use client";
 
-import { API__Goal, type Goal as GoalType } from "@/types/goal";
+import { type Goal as GoalType } from "@/types/goal";
 import {
   createContext,
   PropsWithChildren,
@@ -8,8 +8,9 @@ import {
   useEffect,
   useState,
 } from "react";
-import { supabase } from "@/lib/supabase/client";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { fetchGoals } from "./services/fetch-goals";
+import { createGoal } from "./services/create-goal";
 
 type TrimmedGoal = Omit<GoalType, "id">;
 
@@ -39,18 +40,6 @@ const DailyGoalsContext = createContext<DailyGoalsContextData>({
   setError: (text: string) => {}, // eslint-disable-line @typescript-eslint/no-unused-vars
 });
 
-function fetchGoals(date: string) {
-  return async (): Promise<API__Goal[]> => {
-    const { data, error } = await supabase
-      .from("goals")
-      .select()
-      .eq("date", date);
-
-    if (error) console.error("Error fetching goals:", error);
-    return data as API__Goal[];
-  };
-}
-
 export const useDailyGoals = (): DailyGoalsContextData => {
   return useContext(DailyGoalsContext);
 };
@@ -68,6 +57,8 @@ export default function DailyGoalsProvider(props: DailyGoalsProviderProps) {
     isLoading,
   } = useQuery({ queryKey: ["goals", date], queryFn: fetchGoals(date) });
 
+  const { mutate: addGoal } = useMutation({ mutationFn: createGoal(date) });
+
   const [goals, setGoals] = useState<Map<number, TrimmedGoal>>(new Map());
 
   // Update goals whenever query data changes
@@ -76,12 +67,7 @@ export default function DailyGoalsProvider(props: DailyGoalsProviderProps) {
       const map = new Map<number, TrimmedGoal>();
       goalsData.forEach((goal) => {
         const { id, ...rest } = goal;
-        const newGoal: TrimmedGoal = {
-          text: rest.text,
-          completed: rest.is_completed,
-          custom: true, // TODO: Revisit this, it's not gonna work like that
-        };
-        map.set(id, newGoal);
+        map.set(id, rest);
       });
       setGoals(map);
     }
@@ -101,8 +87,10 @@ export default function DailyGoalsProvider(props: DailyGoalsProviderProps) {
     setGoals(updatedGoals);
   };
 
-  const addTodo = () => {
+  const addTodo = async () => {
     if (newGoal.trim() !== "") {
+      // TODO: Make this a little bit less messy
+      await addGoal({ text: newGoal });
       const updatedGoals = new Map(goals);
       updatedGoals.set(Date.now(), {
         text: newGoal,
