@@ -13,6 +13,7 @@ import { fetchGoals } from "./services/fetch-goals";
 import { createGoal } from "./services/create-goal";
 import { deleteGoal } from "./services/delete-goal";
 import { updateGoal } from "./services/update-goal";
+import Spinner from "@/components/ui/spinner";
 
 type TrimmedGoal = Omit<GoalType, "id">;
 
@@ -165,7 +166,14 @@ export default function DailyGoalsProvider(props: DailyGoalsProviderProps) {
     setError,
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="w-full h-screen flex flex-col justify-center items-center">
+        <Spinner />
+        <p className="mt-4">Loading...</p>
+      </div>
+    );
+
   if (fetchError) return <div>Error: {fetchError.message}</div>;
 
   return (
