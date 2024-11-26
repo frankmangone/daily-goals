@@ -2,7 +2,13 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
+import { ArrowRight, MoreVertical, Trash } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface GoalProps {
   id: number;
@@ -11,10 +17,19 @@ interface GoalProps {
   isCustom: boolean;
   toggleGoal: (id: number, isCustom: boolean) => void;
   removeGoal: (id: number) => void;
+  moveGoalToTomorrow: (id: number) => void;
 }
 
 export default function Goal(props: GoalProps) {
-  const { id, text, completed, isCustom, toggleGoal, removeGoal } = props;
+  const {
+    id,
+    text,
+    completed,
+    isCustom,
+    toggleGoal,
+    removeGoal,
+    moveGoalToTomorrow,
+  } = props;
 
   return (
     <Card
@@ -39,16 +54,23 @@ export default function Goal(props: GoalProps) {
           {text}
         </Label>
       </div>
-      {isCustom && (
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => removeGoal(id)}
-          className="ml-2"
-        >
-          <X className="h-4 w-4" />
-        </Button>
-      )}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="icon" className="ml-2">
+            <MoreVertical className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem onClick={() => removeGoal(id)}>
+            <Trash className="mr-2 h-4 w-4" />
+            <span>Delete</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => moveGoalToTomorrow(id)}>
+            <ArrowRight className="mr-2 h-4 w-4" />
+            <span>Move to Tomorrow</span>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </Card>
   );
 }

@@ -1,8 +1,10 @@
-import { supabase } from "@/lib/supabase/client";
-import { Goal } from "@/types/goal";
+import { getSupabaseClient } from "@/lib/supabase/client";
+import { API__Goal, Goal } from "@/types/goal";
 
 export function fetchGoals(date: string) {
   return async (): Promise<Goal[]> => {
+    const supabase = getSupabaseClient();
+
     const { data, error } = await supabase
       .from("goals")
       .select()
@@ -15,9 +17,11 @@ export function fetchGoals(date: string) {
     }
 
     // Transform
-    return data.map((goal) => ({
+    // TODO: Autogenerate types for responses if possible w/supabase
+    return (data as unknown as API__Goal[]).map((goal) => ({
       id: goal.id,
       text: goal.text,
+      date: goal.date,
       completed: goal.is_completed,
       custom: true,
     }));

@@ -14,6 +14,7 @@ import { createGoal } from "./services/create-goal";
 import { deleteGoal } from "./services/delete-goal";
 import { updateGoal } from "./services/update-goal";
 import Spinner from "@/components/ui/spinner";
+import { addDays, format, parse } from "date-fns";
 
 type TrimmedGoal = Omit<GoalType, "id">;
 
@@ -24,6 +25,7 @@ interface DailyGoalsContextData {
   toggleGoal: (id: number) => void;
   addTodo: () => void;
   removeTodo: (id: number) => void;
+  moveGoalToTomorrow: (id: number) => void;
   //
   newGoal: string;
   setNewGoal: (text: string) => void;
@@ -37,6 +39,7 @@ const DailyGoalsContext = createContext<DailyGoalsContextData>({
   toggleGoal: (id: number) => {}, // eslint-disable-line @typescript-eslint/no-unused-vars
   addTodo: () => {},
   removeTodo: (id: number) => {}, // eslint-disable-line @typescript-eslint/no-unused-vars
+  moveGoalToTomorrow: (id: number) => {}, // eslint-disable-line @typescript-eslint/no-unused-vars
   newGoal: "",
   setNewGoal: (text: string) => {}, // eslint-disable-line @typescript-eslint/no-unused-vars
   error: "",
@@ -105,6 +108,7 @@ export default function DailyGoalsProvider(props: DailyGoalsProviderProps) {
       const updatedGoals = new Map(goals);
       updatedGoals.set(Date.now(), {
         text: newGoal,
+        date: format(new Date(), "yyyy-MM-dd"),
         completed: false,
         custom: true,
       });
@@ -119,6 +123,16 @@ export default function DailyGoalsProvider(props: DailyGoalsProviderProps) {
 
   const removeTodo = async (id: number) => {
     await apiRemove(id);
+    const updatedGoals = new Map(goals);
+    updatedGoals.delete(id);
+    setGoals(updatedGoals);
+  };
+
+  const moveGoalToTomorrow = async (id: number) => {
+    const goal = goals.get(id);
+    const today = parse(goal!.date, "yyyy-MM-dd", new Date());
+    const tomorrow = addDays(today, 1);
+    await apiUpdate({ id, date: format(tomorrow, "yyyy-MM-dd") });
     const updatedGoals = new Map(goals);
     updatedGoals.delete(id);
     setGoals(updatedGoals);
@@ -159,6 +173,7 @@ export default function DailyGoalsProvider(props: DailyGoalsProviderProps) {
     toggleGoal,
     addTodo,
     removeTodo,
+    moveGoalToTomorrow,
     //
     newGoal,
     setNewGoal,

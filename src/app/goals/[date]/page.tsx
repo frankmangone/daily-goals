@@ -19,8 +19,6 @@ export default function GoalsPage({ params }: PageProps) {
 
   return (
     <DailyGoalsProvider date={params_.date}>
-      {" "}
-      {/* Use unwrappedParams here instead of params */}
       <div className="min-h-screen flex flex-col items-center justify-center p-24">
         <h1 className="text-4xl font-bold mb-8">
           Goals for {format(date, "MMMM d, yyyy")}

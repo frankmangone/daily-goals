@@ -7,7 +7,8 @@ import TodoInput from "./todo-input";
 import { Card } from "@/components/ui/card";
 
 export function DailyGoals() {
-  const { error, goals, todos, toggleGoal, removeTodo } = useDailyGoals();
+  const { error, goals, todos, toggleGoal, removeTodo, moveGoalToTomorrow } =
+    useDailyGoals();
 
   const renderGoals = (goalsArray: GoalType[], isCustom: boolean) => (
     <div className="space-y-2">
@@ -16,6 +17,7 @@ export function DailyGoals() {
           key={goal.id}
           toggleGoal={toggleGoal}
           removeGoal={removeTodo}
+          moveGoalToTomorrow={moveGoalToTomorrow}
           {...goal}
           isCustom={isCustom}
         />
