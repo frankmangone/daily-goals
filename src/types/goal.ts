@@ -1,3 +1,5 @@
+import { Database } from "../../database.types";
+
 export interface Goal {
   id: number;
   text: string;
@@ -6,11 +8,4 @@ export interface Goal {
   custom?: boolean;
 }
 
-export interface API__Goal {
-  id: number;
-  created_at: string;
-  date: string;
-  text: string;
-  is_completed: boolean;
-  is_recurrent: boolean;
-}
+export type APIGoal = Database["public"]["Tables"]["goals"]["Row"];
