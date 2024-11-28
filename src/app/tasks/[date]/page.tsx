@@ -1,10 +1,10 @@
 "use client";
 
 import { format, parseISO } from "date-fns";
-import { DailyTasks } from "@/features/tasks/components/daily-tasks";
+import { DailyTasks } from "@/components/features/tasks/components/daily-tasks";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import DailyGoalsProvider from "@/features/tasks/components/context";
+import DailyGoalsProvider from "@/components/features/tasks/components/context";
 import { use } from "react";
 
 interface PageProps {
