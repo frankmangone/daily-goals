@@ -41,12 +41,12 @@ export default function Task(props: TaskProps) {
     >
       <div className="flex items-center space-x-2 flex-grow">
         <Checkbox
-          id={`goal-${id}`}
+          id={`task-${id}`}
           checked={completed}
           onCheckedChange={() => toggleTask(id, isCustom)}
         />
         <Label
-          htmlFor={`goal-${id}`}
+          htmlFor={`task-${id}`}
           className={`text-sm cursor-pointer ${
             completed ? "line-through" : ""
           }`}

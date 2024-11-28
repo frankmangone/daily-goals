@@ -1,12 +1,12 @@
-import { UnsavedGoal } from "@/types/goal";
+import { UnsavedTask } from "@/types/task";
 import { MutateOptions } from "@tanstack/react-query";
 import { Dispatch, SetStateAction } from "react";
 
-type Goals = Map<number, UnsavedGoal>
+type Tasks = Map<number, UnsavedTask>
 
 interface RemoveTaskParams {
-    tasks: Goals
-    setTasks: Dispatch<SetStateAction<Goals>>
+    tasks: Tasks
+    setTasks: Dispatch<SetStateAction<Tasks>>
     apiDelete: (variables: number, options?: MutateOptions<void, Error, number, unknown> | undefined) => void
 }
 

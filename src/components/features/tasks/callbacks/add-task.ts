@@ -1,17 +1,17 @@
 import { CreateTaskPayload } from "@/services/tasks"
-import { UnsavedGoal } from "@/types/goal"
+import { UnsavedTask } from "@/types/task"
 import { MutateOptions } from "@tanstack/react-query"
 import { format } from "date-fns"
 import { Dispatch, SetStateAction } from "react"
 
-type Goals = Map<number, UnsavedGoal>
+type Tasks = Map<number, UnsavedTask>
 
 interface AddTaskParams {
     text: string,
     setText: Dispatch<SetStateAction<string>>,
     setError: Dispatch<SetStateAction<string>>,
-    tasks: Goals,
-    setTasks: Dispatch<SetStateAction<Goals>>
+    tasks: Tasks,
+    setTasks: Dispatch<SetStateAction<Tasks>>
     //
     apiCreate: (variables: CreateTaskPayload, options?: MutateOptions<void, Error, CreateTaskPayload, unknown> | undefined) => void
 }

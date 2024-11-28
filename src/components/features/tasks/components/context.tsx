@@ -1,6 +1,6 @@
 "use client";
 
-import { UnsavedGoal, type Goal as GoalType } from "@/types/goal";
+import { UnsavedTask, type Task as TaskType } from "@/types/task";
 import {
   createContext,
   PropsWithChildren,
@@ -15,8 +15,8 @@ import { generateToggleTask, generateAddTask, generateRemoveTask, generateMoveTa
 import { parseTasks } from "../helpers/parse-tasks";
 
 interface DailyGoalsContextData {
-  goals: GoalType[];
-  dailyTasks: GoalType[];
+  goals: TaskType[];
+  dailyTasks: TaskType[];
   //
   addTask: () => void;
   toggleTask: (id: number) => void;
@@ -55,7 +55,7 @@ export default function DailyGoalsProvider(props: DailyGoalsProviderProps) {
 
   // API Calls ==============================
   const {
-    data: goalsData,
+    data: tasksData,
     error: fetchError,
     isLoading,
   } = useQuery({ queryKey: ["goals", date], queryFn: fetchTasks(date) });
@@ -66,19 +66,19 @@ export default function DailyGoalsProvider(props: DailyGoalsProviderProps) {
 
   // Initial data load ======================
 
-  const [tasks, setTasks] = useState<Map<number, UnsavedGoal>>(new Map());
+  const [tasks, setTasks] = useState<Map<number, UnsavedTask>>(new Map());
 
   // Update goals whenever query data changes
   useEffect(() => {
-    if (goalsData) {
-      const map = new Map<number, UnsavedGoal>();
-      goalsData.forEach((goal) => {
-        const { id, ...rest } = goal;
+    if (tasksData) {
+      const map = new Map<number, UnsavedTask>();
+      tasksData.forEach((task) => {
+        const { id, ...rest } = task;
         map.set(id, rest);
       });
       setTasks(map);
     }
-  }, [goalsData]);
+  }, [tasksData]);
 
   // Use react hook forms?
   const [newGoal, setNewGoal] = useState("");

@@ -1,6 +1,6 @@
 import { Database } from "../../database.types";
 
-export interface Goal {
+export interface Task {
   id: number;
   text: string;
   completed: boolean;
@@ -8,6 +8,6 @@ export interface Goal {
   custom?: boolean;
 }
 
-export type UnsavedGoal = Omit<Goal, 'id'>
+export type UnsavedTask = Omit<Task, 'id'>
 
-export type APIGoal = Database["public"]["Tables"]["goals"]["Row"];
+export type APITask = Database["public"]["Tables"]["tasks"]["Row"];

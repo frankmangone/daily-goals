@@ -1,13 +1,13 @@
 import { UpdateTaskPayload } from "@/services/tasks";
-import { UnsavedGoal } from "@/types/goal";
+import { UnsavedTask } from "@/types/task";
 import { MutateOptions } from "@tanstack/react-query";
 import { Dispatch, SetStateAction } from "react";
 
-type Goals = Map<number, UnsavedGoal>
+type Tasks = Map<number, UnsavedTask>
 
 interface ToggleTaskParams {
-    tasks: Goals
-    setTasks: Dispatch<SetStateAction<Goals>>
+    tasks: Tasks
+    setTasks: Dispatch<SetStateAction<Tasks>>
     apiUpdate: (variables: UpdateTaskPayload, options?: MutateOptions<void, Error, UpdateTaskPayload, unknown> | undefined) => void
 }
 
