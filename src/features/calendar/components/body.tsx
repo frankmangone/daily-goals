@@ -53,7 +53,7 @@ export function CalendarBody() {
 
       {/* Date buttons */}
       {calendarDays.map((day) => (
-        <Link href={`/goals/${format(day, "yyyy-MM-dd")}`} key={day.toString()}>
+        <Link href={`/tasks/${format(day, "yyyy-MM-dd")}`} key={day.toString()}>
           <Button variant="outline" className={getDateButtonClass(day)}>
             {format(day, "d")}
           </Button>

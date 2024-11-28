@@ -10,25 +10,25 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-interface GoalProps {
+interface TaskProps {
   id: number;
   text: string;
   completed: boolean;
   isCustom: boolean;
-  toggleGoal: (id: number, isCustom: boolean) => void;
-  removeGoal: (id: number) => void;
-  moveGoalToTomorrow: (id: number) => void;
+  toggleTask: (id: number, isCustom: boolean) => void;
+  removeTask: (id: number) => void;
+  moveTaskToTomorrow: (id: number) => void;
 }
 
-export default function Goal(props: GoalProps) {
+export default function Task(props: TaskProps) {
   const {
     id,
     text,
     completed,
     isCustom,
-    toggleGoal,
-    removeGoal,
-    moveGoalToTomorrow,
+    toggleTask,
+    removeTask,
+    moveTaskToTomorrow,
   } = props;
 
   return (
@@ -43,7 +43,7 @@ export default function Goal(props: GoalProps) {
         <Checkbox
           id={`goal-${id}`}
           checked={completed}
-          onCheckedChange={() => toggleGoal(id, isCustom)}
+          onCheckedChange={() => toggleTask(id, isCustom)}
         />
         <Label
           htmlFor={`goal-${id}`}
@@ -61,11 +61,11 @@ export default function Goal(props: GoalProps) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem onClick={() => removeGoal(id)}>
+          <DropdownMenuItem onClick={() => removeTask(id)}>
             <Trash className="mr-2 h-4 w-4" />
             <span>Delete</span>
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => moveGoalToTomorrow(id)}>
+          <DropdownMenuItem onClick={() => moveTaskToTomorrow(id)}>
             <ArrowRight className="mr-2 h-4 w-4" />
             <span>Move to Tomorrow</span>
           </DropdownMenuItem>

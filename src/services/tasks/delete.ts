@@ -1,6 +1,6 @@
 import { getSupabaseClient } from "@/lib/supabase/client";
 
-export async function deleteGoal(id: number): Promise<void> {
+export async function deleteTask(id: number): Promise<void> {
   const supabase = getSupabaseClient();
   const { error } = await supabase.from("goals").delete().eq("id", id);
 

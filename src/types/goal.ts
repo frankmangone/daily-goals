@@ -8,4 +8,6 @@ export interface Goal {
   custom?: boolean;
 }
 
+export type UnsavedGoal = Omit<Goal, 'id'>
+
 export type APIGoal = Database["public"]["Tables"]["goals"]["Row"];

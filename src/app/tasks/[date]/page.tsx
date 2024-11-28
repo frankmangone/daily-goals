@@ -1,10 +1,10 @@
 "use client";
 
 import { format, parseISO } from "date-fns";
-import { DailyGoals } from "@/components/pages/goals/daily-goals";
+import { DailyTasks } from "@/features/tasks/components/daily-tasks";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import DailyGoalsProvider from "@/components/pages/goals/context";
+import DailyGoalsProvider from "@/features/tasks/components/context";
 import { use } from "react";
 
 interface PageProps {
@@ -13,7 +13,7 @@ interface PageProps {
   };
 }
 
-export default function GoalsPage({ params }: PageProps) {
+export default function TasksPage({ params }: PageProps) {
   const params_ = use(params);
   const date = parseISO(params_.date);
 
@@ -23,7 +23,7 @@ export default function GoalsPage({ params }: PageProps) {
         <h1 className="text-4xl font-bold mb-8">
           Goals for {format(date, "MMMM d, yyyy")}
         </h1>
-        <DailyGoals />
+        <DailyTasks />
         <Link href="/" className="mt-8">
           <Button variant="outline">Back to Calendar</Button>
         </Link>

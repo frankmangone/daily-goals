@@ -1,25 +1,25 @@
 "use client";
 
 import { type Goal as GoalType } from "@/types/goal";
-import Goal from "./goal";
+import Task from "./task";
 import { useDailyGoals } from "../context";
 import TodoInput from "./todo-input";
 import { Card } from "@/components/ui/card";
 
-export function DailyGoals() {
-  const { error, goals, todos, toggleGoal, removeTodo, moveGoalToTomorrow } =
+export function DailyTasks() {
+  const { dailyTasks, toggleTask, removeTask, moveTaskToTomorrow } =
     useDailyGoals();
 
-  const renderGoals = (goalsArray: GoalType[], isCustom: boolean) => (
+  const renderTasks = (tasksArray: GoalType[], isCustom: boolean) => (
     <div className="space-y-2">
-      {goalsArray.map((goal) => (
-        <Goal
-          key={goal.id}
-          toggleGoal={toggleGoal}
-          removeGoal={removeTodo}
-          moveGoalToTomorrow={moveGoalToTomorrow}
-          {...goal}
+      {tasksArray.map((task) => (
+        <Task
+          key={task.id}
+          toggleTask={toggleTask}
+          removeTask={removeTask}
+          moveTaskToTomorrow={moveTaskToTomorrow}
           isCustom={isCustom}
+          {...task}
         />
       ))}
     </div>
@@ -38,7 +38,7 @@ export function DailyGoals() {
         <div>
           <h2 className="text-xl font-semibold mb-4">Tasks</h2>
           <TodoInput />
-          {renderGoals(todos, true)}
+          {renderTasks(dailyTasks, true)}
         </div>
       </div>
     </div>

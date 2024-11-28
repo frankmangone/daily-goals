@@ -1,11 +1,11 @@
 import { getSupabaseClient } from "@/lib/supabase/client";
 
-interface GoalPayload {
+export interface CreateTaskPayload {
   text: string;
 }
 
-export function createGoal(date: string) {
-  return async (payload: GoalPayload): Promise<void> => {
+export function createTask(date: string) {
+  return async (payload: CreateTaskPayload): Promise<void> => {
     const supabase = getSupabaseClient();
     const { error } = await supabase.from("goals").insert({
       date,
