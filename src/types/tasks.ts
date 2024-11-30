@@ -5,9 +5,9 @@ export interface Task {
   text: string;
   completed: boolean;
   date: string;
-  custom?: boolean;
+  isDailyGoal?: boolean;
 }
 
-export type UnsavedTask = Omit<Task, 'id'>
+export type UnsavedTask = Omit<Task, "id">;
 
 export type APITask = Database["public"]["Tables"]["tasks"]["Row"];

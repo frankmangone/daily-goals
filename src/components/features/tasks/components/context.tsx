@@ -1,6 +1,6 @@
 "use client";
 
-import { UnsavedTask, type Task as TaskType } from "@/types/task";
+import { UnsavedTask, type Task as TaskType } from "@/types/tasks";
 import {
   createContext,
   PropsWithChildren,
@@ -9,9 +9,19 @@ import {
   useState,
 } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { createTask, fetchTasks, deleteTask, updateTask } from "@/services/tasks";
+import {
+  createTask,
+  fetchTasks,
+  deleteTask,
+  updateTask,
+} from "@/services/tasks";
 import Spinner from "@/components/ui/spinner";
-import { generateToggleTask, generateAddTask, generateRemoveTask, generateMoveTaskToTomorrow } from "../callbacks";
+import {
+  generateToggleTask,
+  generateAddTask,
+  generateRemoveTask,
+  generateMoveTaskToTomorrow,
+} from "../callbacks";
 import { parseTasks } from "../helpers/parse-tasks";
 
 interface DailyGoalsContextData {
@@ -86,10 +96,21 @@ export default function DailyGoalsProvider(props: DailyGoalsProviderProps) {
 
   // Interaction callbacks ==================
 
-  const addTask = generateAddTask({ tasks, text: newGoal, setText: setNewGoal, setError, setTasks, apiCreate })
-  const toggleTask = generateToggleTask({ tasks, setTasks, apiUpdate })
-  const removeTask = generateRemoveTask({ tasks, setTasks, apiDelete })
-  const moveTaskToTomorrow = generateMoveTaskToTomorrow({ tasks, setTasks, apiUpdate })
+  const addTask = generateAddTask({
+    tasks,
+    text: newGoal,
+    setText: setNewGoal,
+    setError,
+    setTasks,
+    apiCreate,
+  });
+  const toggleTask = generateToggleTask({ tasks, setTasks, apiUpdate });
+  const removeTask = generateRemoveTask({ tasks, setTasks, apiDelete });
+  const moveTaskToTomorrow = generateMoveTaskToTomorrow({
+    tasks,
+    setTasks,
+    apiUpdate,
+  });
 
   const { dailyTasks, goals } = parseTasks(tasks);
 
@@ -108,13 +129,14 @@ export default function DailyGoalsProvider(props: DailyGoalsProviderProps) {
     setError,
   };
 
-  if (isLoading)
+  if (isLoading) {
     return (
       <div className="w-full h-screen flex flex-col justify-center items-center">
         <Spinner />
         <p className="mt-4">Loading...</p>
       </div>
     );
+  }
 
   if (fetchError) return <div>Error: {fetchError.message}</div>;
 

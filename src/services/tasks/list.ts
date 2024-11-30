@@ -1,15 +1,14 @@
-import { TABLES } from "@/lib/enums/supabase-tables.enum";
+import { FUNCTIONS } from "@/lib/enums";
 import { getSupabaseClient } from "@/lib/supabase/client";
-import { APITask, Task } from "@/types/task";
+import { APITask, Task } from "@/types/tasks";
 
 export function fetchTasks(date: string) {
   return async (): Promise<Task[]> => {
     const supabase = getSupabaseClient();
 
-    const { data, error } = await supabase
-      .from(TABLES.TASKS)
-      .select()
-      .eq("date", date);
+    const { data, error } = await supabase.rpc(FUNCTIONS.GET_TASKS_BY_DATE, {
+      _date: date,
+    });
 
     if (error || !data) {
       console.error("Error fetching tasks:", error);
@@ -23,7 +22,7 @@ export function fetchTasks(date: string) {
       text: tasks.text,
       date: tasks.date,
       completed: tasks.is_completed,
-      custom: true,
+      isDailyGoal: tasks.is_daily_goal,
     }));
   };
 }

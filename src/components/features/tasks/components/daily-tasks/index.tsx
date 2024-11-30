@@ -1,16 +1,15 @@
 "use client";
 
-import { type Task as TaskType } from "@/types/task";
+import { type Task as TaskType } from "@/types/tasks";
 import Task from "./task";
 import { useDailyGoals } from "../context";
 import TodoInput from "./todo-input";
-import { Card } from "@/components/ui/card";
 
 export function DailyTasks() {
-  const { dailyTasks, toggleTask, removeTask, moveTaskToTomorrow } =
+  const { goals, dailyTasks, toggleTask, removeTask, moveTaskToTomorrow } =
     useDailyGoals();
 
-  const renderTasks = (tasksArray: TaskType[], isCustom: boolean) => (
+  const renderTasks = (tasksArray: TaskType[]) => (
     <div className="space-y-2">
       {tasksArray.map((task) => (
         <Task
@@ -18,7 +17,6 @@ export function DailyTasks() {
           toggleTask={toggleTask}
           removeTask={removeTask}
           moveTaskToTomorrow={moveTaskToTomorrow}
-          isCustom={isCustom}
           {...task}
         />
       ))}
@@ -29,16 +27,16 @@ export function DailyTasks() {
     <div className="w-full max-w-4xl mx-auto p-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
-          <h2 className="text-xl font-semibold mb-4">Daily Tasks</h2>
-          <Card className="p-4 flex items-center justify-between h-14">
-            <h3>🚧 Under construction!</h3>
-          </Card>
-          {/* Tasks(goals, false) */}
+          <h2 className="text-xl font-semibold mb-4">Daily Goals</h2>
+          <p className="text-md mb-4 text-gray-500">
+            Your daily goals will show up on your task list every day
+          </p>
+          {renderTasks(goals)}
         </div>
         <div>
           <h2 className="text-xl font-semibold mb-4">Tasks</h2>
           <TodoInput />
-          {renderTasks(dailyTasks, true)}
+          {renderTasks(dailyTasks)}
         </div>
       </div>
     </div>

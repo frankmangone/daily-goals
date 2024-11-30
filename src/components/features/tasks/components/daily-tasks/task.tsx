@@ -14,22 +14,14 @@ interface TaskProps {
   id: number;
   text: string;
   completed: boolean;
-  isCustom: boolean;
-  toggleTask: (id: number, isCustom: boolean) => void;
+  toggleTask: (id: number) => void;
   removeTask: (id: number) => void;
   moveTaskToTomorrow: (id: number) => void;
 }
 
 export default function Task(props: TaskProps) {
-  const {
-    id,
-    text,
-    completed,
-    isCustom,
-    toggleTask,
-    removeTask,
-    moveTaskToTomorrow,
-  } = props;
+  const { id, text, completed, toggleTask, removeTask, moveTaskToTomorrow } =
+    props;
 
   return (
     <Card
@@ -43,7 +35,7 @@ export default function Task(props: TaskProps) {
         <Checkbox
           id={`task-${id}`}
           checked={completed}
-          onCheckedChange={() => toggleTask(id, isCustom)}
+          onCheckedChange={() => toggleTask(id)}
         />
         <Label
           htmlFor={`task-${id}`}

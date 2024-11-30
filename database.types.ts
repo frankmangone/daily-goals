@@ -13,17 +13,38 @@ export type Database = {
         Row: {
           created_at: string
           date: string
+          goals_checked: boolean | null
           id: number
         }
         Insert: {
           created_at?: string
           date: string
+          goals_checked?: boolean | null
           id?: number
         }
         Update: {
           created_at?: string
           date?: string
+          goals_checked?: boolean | null
           id?: number
+        }
+        Relationships: []
+      }
+      goals: {
+        Row: {
+          created_at: string
+          id: number
+          text: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          text: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          text?: string
         }
         Relationships: []
       }
@@ -33,7 +54,7 @@ export type Database = {
           date: string
           id: number
           is_completed: boolean
-          is_recurrent: boolean
+          is_daily_goal: boolean
           text: string
         }
         Insert: {
@@ -41,7 +62,7 @@ export type Database = {
           date: string
           id?: number
           is_completed?: boolean
-          is_recurrent?: boolean
+          is_daily_goal?: boolean
           text: string
         }
         Update: {
@@ -49,7 +70,7 @@ export type Database = {
           date?: string
           id?: number
           is_completed?: boolean
-          is_recurrent?: boolean
+          is_daily_goal?: boolean
           text?: string
         }
         Relationships: []
@@ -59,7 +80,19 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_tasks_by_date: {
+        Args: {
+          _date: string
+        }
+        Returns: {
+          created_at: string
+          date: string
+          id: number
+          is_completed: boolean
+          is_daily_goal: boolean
+          text: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
