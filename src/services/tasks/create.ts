@@ -12,7 +12,7 @@ export function createTask(date: string) {
       date,
       text: payload.text,
       is_completed: false,
-      is_recurrent: false,
+      is_daily_goal: false,
     });
 
     if (error) {

@@ -3,9 +3,9 @@ import { getSupabaseClient } from "@/lib/supabase/client";
 
 export interface UpdateTaskPayload {
   id: number;
-  is_completed?: boolean;
+  text?: string;
   date?: string;
-  // TODO: Add other keys, compose interfaces
+  is_completed?: boolean;
 }
 
 export async function updateTask(payload: UpdateTaskPayload): Promise<void> {

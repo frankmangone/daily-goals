@@ -21,8 +21,9 @@ import {
   generateAddTask,
   generateRemoveTask,
   generateMoveTaskToTomorrow,
-} from "../callbacks";
-import { parseTasks } from "../helpers/parse-tasks";
+} from "../../callbacks";
+import { parseTasks } from "../../helpers/parse-tasks";
+import { generateEditTask } from "../../callbacks/edit-task";
 
 interface DailyGoalsContextData {
   goals: TaskType[];
@@ -32,6 +33,7 @@ interface DailyGoalsContextData {
   toggleTask: (id: number) => void;
   removeTask: (id: number) => void;
   moveTaskToTomorrow: (id: number) => void;
+  editTask: (id: number, text: string) => void;
   //
   newGoal: string;
   setNewGoal: (text: string) => void;
@@ -43,13 +45,14 @@ const DailyGoalsContext = createContext<DailyGoalsContextData>({
   goals: [],
   dailyTasks: [],
   addTask: () => {},
-  toggleTask: (id: number) => {}, // eslint-disable-line @typescript-eslint/no-unused-vars
-  removeTask: (id: number) => {}, // eslint-disable-line @typescript-eslint/no-unused-vars
-  moveTaskToTomorrow: (id: number) => {}, // eslint-disable-line @typescript-eslint/no-unused-vars
+  editTask: () => {},
+  toggleTask: () => {},
+  removeTask: () => {},
+  moveTaskToTomorrow: () => {},
   newGoal: "",
-  setNewGoal: (text: string) => {}, // eslint-disable-line @typescript-eslint/no-unused-vars
+  setNewGoal: () => {},
   error: "",
-  setError: (text: string) => {}, // eslint-disable-line @typescript-eslint/no-unused-vars
+  setError: () => {},
 });
 
 export const useDailyGoals = (): DailyGoalsContextData => {
@@ -105,6 +108,7 @@ export default function DailyGoalsProvider(props: DailyGoalsProviderProps) {
     apiCreate,
   });
   const toggleTask = generateToggleTask({ tasks, setTasks, apiUpdate });
+  const editTask = generateEditTask({ tasks, setTasks, apiUpdate });
   const removeTask = generateRemoveTask({ tasks, setTasks, apiDelete });
   const moveTaskToTomorrow = generateMoveTaskToTomorrow({
     tasks,
@@ -122,6 +126,7 @@ export default function DailyGoalsProvider(props: DailyGoalsProviderProps) {
     addTask,
     removeTask,
     moveTaskToTomorrow,
+    editTask,
     //
     newGoal,
     setNewGoal,

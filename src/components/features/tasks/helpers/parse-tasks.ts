@@ -18,7 +18,7 @@ export const parseTasks = (tasks: Map<number, UnsavedTask>): ParsedTasks => {
   const unfinishedTasks: Task[] = [];
 
   // Map the elements of the map store to separate arrays for simpler rendering
-  tasks.keys()?.forEach((key) => {
+  tasks?.keys()?.forEach((key) => {
     const task = tasks.get(key);
 
     if (!task) return;

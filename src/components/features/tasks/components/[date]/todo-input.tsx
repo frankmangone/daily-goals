@@ -1,7 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import { useDailyGoals } from "../context";
+import { useDailyGoals } from "../../contexts/[date]/context.provider";
 
 export default function TodoInput() {
   const { newGoal, setNewGoal, error, setError, addTask } = useDailyGoals();

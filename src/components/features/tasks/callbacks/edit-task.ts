@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction } from "react";
 
 type Tasks = Map<number, UnsavedTask>;
 
-interface ToggleTaskParams {
+interface EditTaskParams {
   tasks: Tasks;
   setTasks: Dispatch<SetStateAction<Tasks>>;
   apiUpdate: (
@@ -14,25 +14,25 @@ interface ToggleTaskParams {
   ) => void;
 }
 
-type ToggleTaskFn = (id: number) => Promise<void>;
+type EditEditFn = (id: number, text: string) => Promise<void>;
 
 /**
- * Thunk to generate the toggle task callback used in our component logic.
- * @param {ToggleTaskParams} params
- * @returns {ToggleTaskFn}
+ * Thunk to generate the edit task callback used in our component logic.
+ * @param {EditTaskParams} params
+ * @returns {EditEditFn}
  */
-export const generateToggleTask = (params: ToggleTaskParams): ToggleTaskFn => {
+export const generateEditTask = (params: EditTaskParams): EditEditFn => {
   const { tasks, setTasks, apiUpdate } = params;
 
-  return async (id: number) => {
+  return async (id: number, text: string) => {
     const updatedTasks = new Map(tasks);
     const task = updatedTasks.get(id);
 
     if (!task) return;
 
     // TODO: Wrap in try / catch
-    await apiUpdate({ id, is_completed: !task.completed });
-    updatedTasks.set(id, { ...task, completed: !task.completed });
+    await apiUpdate({ id, text });
+    updatedTasks.set(id, { ...task, text });
     setTasks(updatedTasks);
   };
 };

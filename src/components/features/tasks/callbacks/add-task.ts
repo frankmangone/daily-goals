@@ -21,6 +21,11 @@ interface AddTaskParams {
 
 type AddTaskFn = () => Promise<void>;
 
+/**
+ * Thunk to generate the add task callback used in our component logic.
+ * @param {AddTaskParams} params
+ * @returns {AddTaskFn}
+ */
 export const generateAddTask = (params: AddTaskParams): AddTaskFn => {
   const { tasks, text, apiCreate, setTasks, setText, setError } = params;
 
@@ -34,7 +39,7 @@ export const generateAddTask = (params: AddTaskParams): AddTaskFn => {
         text,
         date: format(new Date(), "yyyy-MM-dd"),
         completed: false,
-        custom: true,
+        isDailyGoal: false,
       });
       setTasks(updatedGoals);
       //
