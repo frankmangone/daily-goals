@@ -2,7 +2,7 @@
 
 import { type Task as TaskType } from "@/types/tasks";
 import Task from "./task";
-import { useDailyGoals } from "../../../contexts/[date]/context.provider";
+import { useDailyTasks } from "../../../contexts/[date]/context.provider";
 import TodoInput from "./todo-input";
 
 export function DailyTasks() {
@@ -13,7 +13,7 @@ export function DailyTasks() {
     editTask,
     removeTask,
     moveTaskToTomorrow,
-  } = useDailyGoals();
+  } = useDailyTasks();
 
   const renderTasks = (tasksArray: TaskType[]) => (
     <div className="space-y-2">

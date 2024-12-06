@@ -19,13 +19,13 @@ import Spinner from "@/components/ui/spinner";
 import {
   generateToggleTask,
   generateAddTask,
+  generateEditTask,
   generateRemoveTask,
   generateMoveTaskToTomorrow,
 } from "../../callbacks";
 import { parseTasks } from "../../helpers/parse-tasks";
-import { generateEditTask } from "../../callbacks/edit-task";
 
-interface DailyGoalsContextData {
+interface DailyTasksContextData {
   goals: TaskType[];
   dailyTasks: TaskType[];
   //
@@ -35,13 +35,13 @@ interface DailyGoalsContextData {
   moveTaskToTomorrow: (id: number) => void;
   editTask: (id: number, text: string) => void;
   //
-  newGoal: string;
-  setNewGoal: (text: string) => void;
+  newTask: string;
+  setNewTask: (text: string) => void;
   error: string;
   setError: (text: string) => void;
 }
 
-const DailyGoalsContext = createContext<DailyGoalsContextData>({
+const DailyTasksContext = createContext<DailyTasksContextData>({
   goals: [],
   dailyTasks: [],
   addTask: () => {},
@@ -49,21 +49,21 @@ const DailyGoalsContext = createContext<DailyGoalsContextData>({
   toggleTask: () => {},
   removeTask: () => {},
   moveTaskToTomorrow: () => {},
-  newGoal: "",
-  setNewGoal: () => {},
+  newTask: "",
+  setNewTask: () => {},
   error: "",
   setError: () => {},
 });
 
-export const useDailyGoals = (): DailyGoalsContextData => {
-  return useContext(DailyGoalsContext);
+export const useDailyTasks = (): DailyTasksContextData => {
+  return useContext(DailyTasksContext);
 };
 
-interface DailyGoalsProviderProps extends PropsWithChildren {
+interface DailyTasksProviderProps extends PropsWithChildren {
   date: string;
 }
 
-export default function DailyGoalsProvider(props: DailyGoalsProviderProps) {
+export default function DailyTasksProvider(props: DailyTasksProviderProps) {
   const { children, date } = props;
 
   // API Calls ==============================
@@ -71,7 +71,7 @@ export default function DailyGoalsProvider(props: DailyGoalsProviderProps) {
     data: tasksData,
     error: fetchError,
     isLoading,
-  } = useQuery({ queryKey: ["goals", date], queryFn: fetchTasks(date) });
+  } = useQuery({ queryKey: ["tasks", date], queryFn: fetchTasks(date) });
 
   const { mutate: apiCreate } = useMutation({ mutationFn: createTask(date) });
   const { mutate: apiDelete } = useMutation({ mutationFn: deleteTask });
@@ -94,15 +94,15 @@ export default function DailyGoalsProvider(props: DailyGoalsProviderProps) {
   }, [tasksData]);
 
   // Use react hook forms?
-  const [newGoal, setNewGoal] = useState("");
+  const [newTask, setNewTask] = useState("");
   const [error, setError] = useState("");
 
   // Interaction callbacks ==================
 
   const addTask = generateAddTask({
     tasks,
-    text: newGoal,
-    setText: setNewGoal,
+    text: newTask,
+    setText: setNewTask,
     setError,
     setTasks,
     apiCreate,
@@ -118,7 +118,7 @@ export default function DailyGoalsProvider(props: DailyGoalsProviderProps) {
 
   const { dailyTasks, goals } = parseTasks(tasks);
 
-  const value: DailyGoalsContextData = {
+  const value: DailyTasksContextData = {
     goals,
     dailyTasks,
     //
@@ -128,8 +128,8 @@ export default function DailyGoalsProvider(props: DailyGoalsProviderProps) {
     moveTaskToTomorrow,
     editTask,
     //
-    newGoal,
-    setNewGoal,
+    newTask,
+    setNewTask,
     error,
     setError,
   };
@@ -146,8 +146,8 @@ export default function DailyGoalsProvider(props: DailyGoalsProviderProps) {
   if (fetchError) return <div>Error: {fetchError.message}</div>;
 
   return (
-    <DailyGoalsContext.Provider value={value}>
+    <DailyTasksContext.Provider value={value}>
       {children}
-    </DailyGoalsContext.Provider>
+    </DailyTasksContext.Provider>
   );
 }

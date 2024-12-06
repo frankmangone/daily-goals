@@ -17,12 +17,12 @@ export function fetchTasks(date: string) {
     }
 
     // Transform
-    return (data as unknown as APITask[]).map((tasks) => ({
-      id: tasks.id,
-      text: tasks.text,
-      date: tasks.date,
-      completed: tasks.is_completed,
-      isDailyGoal: tasks.is_daily_goal,
+    return (data as unknown as APITask[]).map((task) => ({
+      id: task.id,
+      text: task.text,
+      date: task.date,
+      completed: task.is_completed,
+      isDailyGoal: task.is_daily_goal,
     }));
   };
 }

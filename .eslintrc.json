@@ -365,6 +365,13 @@
     // https://eslint.org/docs/rules/no-unmodified-loop-condition
     "no-unmodified-loop-condition": "off",
 
+    "no-unused-vars": [
+      1,
+      {
+        "args": "none"
+      }
+    ],
+
     // disallow usage of expressions in statement position
     // https://eslint.org/docs/rules/no-unused-expressions
     "no-unused-expressions": [

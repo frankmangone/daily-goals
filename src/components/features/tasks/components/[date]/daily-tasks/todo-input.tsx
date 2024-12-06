@@ -1,13 +1,13 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import { useDailyGoals } from "../../../contexts/[date]/context.provider";
+import { useDailyTasks } from "../../../contexts/[date]/context.provider";
 
 export default function TodoInput() {
-  const { newGoal, setNewGoal, error, setError, addTask } = useDailyGoals();
+  const { newTask, setNewTask, error, setError, addTask } = useDailyTasks();
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewGoal(e.target.value);
+    setNewTask(e.target.value);
     setError("");
   };
 
@@ -17,7 +17,7 @@ export default function TodoInput() {
         <Input
           type="text"
           placeholder="Add a task for today..."
-          value={newGoal}
+          value={newTask}
           onChange={onChange}
           onKeyDown={(e) => e.key === "Enter" && addTask()}
           className={error ? "border-red-500" : ""}
